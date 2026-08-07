@@ -59,7 +59,7 @@ export default function Home({ setView }: { setView: (v: ViewState) => void }) {
         {/* Booking Search Box floating over hero bottom */}
         <div className="absolute bottom-0 left-0 w-full translate-y-1/2 px-4 sm:px-6 lg:px-8 z-20">
           <div className="max-w-6xl mx-auto bg-white rounded-sm shadow-2xl flex flex-col md:flex-row items-center p-4">
-            <form onSubmit={handleSearch} className="w-full grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+            <form onSubmit={handleSearch} className="w-full grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
               <div className="px-4 py-2 border-r border-gray-100 last:border-0 md:border-r">
                 <label className="block text-xs font-bold text-gray-800 mb-1 flex items-center"><Calendar size={14} className="mr-1"/> Check-in</label>
                 <input type="date" className="w-full bg-transparent text-sm text-gray-500 focus:outline-none" required />
@@ -103,7 +103,7 @@ export default function Home({ setView }: { setView: (v: ViewState) => void }) {
             <h2 className="text-3xl font-['Playfair_Display'] text-hotel-darker font-bold">Why Choose Us</h2>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="flex flex-col items-center">
               <BedDouble size={40} strokeWidth={1} className="text-gray-700 mb-4" />
               <h3 className="text-sm font-semibold text-gray-800">Luxury Rooms</h3>
@@ -111,10 +111,6 @@ export default function Home({ setView }: { setView: (v: ViewState) => void }) {
             <div className="flex flex-col items-center">
               <Wifi size={40} strokeWidth={1} className="text-gray-700 mb-4" />
               <h3 className="text-sm font-semibold text-gray-800">Free Wi-Fi</h3>
-            </div>
-            <div className="flex flex-col items-center">
-              <Utensils size={40} strokeWidth={1} className="text-gray-700 mb-4" />
-              <h3 className="text-sm font-semibold text-gray-800">Restaurant</h3>
             </div>
             <div className="flex flex-col items-center">
               <Plane size={40} strokeWidth={1} className="text-gray-700 mb-4" />
@@ -201,49 +197,6 @@ export default function Home({ setView }: { setView: (v: ViewState) => void }) {
           </div>
         </div>
       </section>
-
-      {/* Restaurant Section */}
-      <section id="restaurant" className="py-24 bg-hotel-darker text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1 relative h-[500px] overflow-hidden group">
-              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Restaurant Interior" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-            <div className="order-1 lg:order-2">
-              <h4 className="text-gold font-semibold tracking-widest uppercase text-sm mb-2">Culinary Experience</h4>
-              <h2 className="text-4xl font-['Playfair_Display'] text-white mb-6">Our Restaurant <br/>& Cafe</h2>
-              <p className="text-gray-300 mb-6 leading-relaxed text-sm">
-                Indulge in a culinary journey at our signature restaurant. Our executive chefs prepare exquisite dishes using the finest local and international ingredients, blending traditional Somali flavors with modern gastronomy.
-              </p>
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full border border-gold flex items-center justify-center text-gold mr-4">
-                    <span className="font-['Playfair_Display'] italic">B</span>
-                  </div>
-                  <div>
-                    <h5 className="font-bold tracking-wider text-sm">Breakfast</h5>
-                    <p className="text-xs text-gray-400">7:00 AM - 10:30 AM</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full border border-gold flex items-center justify-center text-gold mr-4">
-                    <span className="font-['Playfair_Display'] italic">L</span>
-                  </div>
-                  <div>
-                    <h5 className="font-bold tracking-wider text-sm">Lunch & Dinner</h5>
-                    <p className="text-xs text-gray-400">12:00 PM - 11:00 PM</p>
-                  </div>
-                </div>
-              </div>
-              <button className="bg-transparent border border-gold text-gold hover:bg-gold hover:text-hotel-darker px-8 py-3 text-sm font-bold uppercase transition-colors tracking-widest">
-                View Menu
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Section */}
       <section id="gallery" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

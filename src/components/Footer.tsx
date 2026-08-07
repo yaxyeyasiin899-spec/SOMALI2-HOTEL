@@ -28,7 +28,6 @@ export default function Footer() {
               <li><a href="#home" className="hover:text-gold transition-colors">Home</a></li>
               <li><a href="#about" className="hover:text-gold transition-colors">About Us</a></li>
               <li><a href="#rooms" className="hover:text-gold transition-colors">Rooms & Suites</a></li>
-              <li><a href="#restaurant" className="hover:text-gold transition-colors">Restaurant</a></li>
               <li><a href="#facilities" className="hover:text-gold transition-colors">Facilities</a></li>
               <li><a href="#gallery" className="hover:text-gold transition-colors">Gallery</a></li>
             </ul>

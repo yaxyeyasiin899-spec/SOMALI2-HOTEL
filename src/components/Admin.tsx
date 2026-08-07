@@ -30,7 +30,6 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 const dataRevenue = [
   { name: 'Room Bookings', value: 12000, color: '#1e3a8a' },
   { name: 'Other Services', value: 3500, color: '#f59e0b' },
-  { name: 'Restaurant', value: 2000, color: '#10b981' },
   { name: 'Others', value: 500, color: '#6b7280' },
 ];
 

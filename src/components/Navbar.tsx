@@ -33,7 +33,6 @@ export default function Navbar({ view, setView }: NavbarProps) {
     { name: 'Home', id: 'home', view: 'home' },
     { name: 'About', id: 'about', view: 'home' },
     { name: 'Rooms', id: 'rooms', view: 'home' },
-    { name: 'Restaurant', id: 'restaurant', view: 'home' },
     { name: 'Services', view: 'services' },
     { name: 'Gallery', id: 'gallery', view: 'home' },
     { name: 'Contact', id: 'contact', view: 'home' },
