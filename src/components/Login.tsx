@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ViewState } from '../App';
-import { User, Lock, Mail, Phone } from 'lucide-react';
-import { auth, googleProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../lib/firebase';
+import { User, Lock, Mail, Phone } from "lucide-react";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db, auth, googleProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../lib/firebase';
 
 export default function Login({ setView }: { setView: (v: ViewState) => void }) {
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot'>('login');
@@ -88,6 +89,21 @@ export default function Login({ setView }: { setView: (v: ViewState) => void }) 
   const handleGoogleAuth = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      
+      const userRef = doc(db, 'users', result.user.uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          name: result.user.displayName || 'Google User',
+          email: result.user.email || '',
+          photoURL: result.user.photoURL || '',
+          phone: result.user.phoneNumber || '',
+          createdAt: serverTimestamp(),
+          role: 'user'
+        });
+      }
+      
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userName', result.user.displayName || 'Google User');
       localStorage.setItem('userEmail', result.user.email || '');

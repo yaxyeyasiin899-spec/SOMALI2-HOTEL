@@ -1,0 +1,31 @@
+#!/bin/bash
+cat << 'INNER_EOF' > replacement.txt
+  const handleGoogleAuth = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      const userRef = doc(db, 'users', result.user.uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          name: result.user.displayName || 'Google User',
+          email: result.user.email || '',
+          photoURL: result.user.photoURL || '',
+          phone: result.user.phoneNumber || '',
+          createdAt: serverTimestamp(),
+          role: 'user'
+        });
+      }
+      
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userName', result.user.displayName || 'Google User');
+      localStorage.setItem('userEmail', result.user.email || '');
+      localStorage.setItem('userPhoto', result.user.photoURL || '');
+      setView('home');
+    } catch (err: any) {
+      setError(err.message || 'Google sign in failed');
+    }
+  };
+INNER_EOF
+sed -i -e '/const handleGoogleAuth = async () => {/,/  };/c\' -e "$(cat replacement.txt | sed 's/$/\\/')" src/components/Login.tsx
