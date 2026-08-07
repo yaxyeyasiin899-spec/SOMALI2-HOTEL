@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ViewState } from '../App';
 import { User, Lock, Mail, Phone } from "lucide-react";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db, auth, googleProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../lib/firebase';
+import { db, auth, googleProvider, sendPasswordResetEmail, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../lib/firebase';
 
 export default function Login({ setView }: { setView: (v: ViewState) => void }) {
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot'>('login');
@@ -22,7 +22,12 @@ export default function Login({ setView }: { setView: (v: ViewState) => void }) 
     
     if (authMode === 'forgot') {
       if (email) {
-        setSuccess('Password reset link sent to your email.');
+        try {
+          await sendPasswordResetEmail(auth, email);
+          setSuccess('Password reset link sent to your email.');
+        } catch (err: any) {
+          setError(err.message || 'Failed to send reset email');
+        }
       } else {
         setError('Please enter your email address');
       }

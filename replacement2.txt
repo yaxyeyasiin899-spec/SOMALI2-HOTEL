@@ -1,0 +1,13 @@
+    if (authMode === 'forgot') {
+      if (email) {
+        try {
+          await sendPasswordResetEmail(auth, email);
+          setSuccess('Password reset link sent to your email.');
+        } catch (err: any) {
+          setError(err.message || 'Failed to send reset email');
+        }
+      } else {
+        setError('Please enter your email address');
+      }
+      return;
+    }

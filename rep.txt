@@ -1,0 +1,2 @@
+    if (authMode === 'signup') {
+      if (!name || !email || !phone || !password || !confirmPassword) {
