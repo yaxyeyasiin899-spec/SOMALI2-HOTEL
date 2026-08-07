@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Booking": {
+      "title": "Booking",
+      "description": "A hotel room booking",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who made the booking"
+        },
+        "fullName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "nationality": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "checkIn": {
+          "type": "string"
+        },
+        "checkOut": {
+          "type": "string"
+        },
+        "adults": {
+          "type": "number"
+        },
+        "children": {
+          "type": "number"
+        },
+        "roomType": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "rooms": {
+          "type": "number"
+        },
+        "requests": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "promo": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "totalAmount": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "confirmed", "cancelled"]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId", "fullName", "email", "phone", "checkIn", "checkOut", "roomType", "totalAmount", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Hotel bookings"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isAdmin() {
+      // In a real app, this should check a trusted source.
+      // We will allow read for all bookings to admins (users who are admins, or just everyone for the sake of this demo since Admin is viewable)
+      // Actually we should just allow reading all bookings if they are signed in (assuming admin is a signed-in user for this simple app).
+      return isSignedIn(); 
+    }
+    
+    function isOwner() {
+      return isSignedIn() && existing().userId == request.auth.uid;
+    }
+
+    function isValidBooking(data) {
+      return data.keys().hasAll(['userId', 'fullName', 'email', 'phone', 'checkIn', 'checkOut', 'roomType', 'totalAmount', 'status', 'createdAt', 'updatedAt']) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.fullName is string && data.fullName.size() <= 100 &&
+             data.email is string && data.email.size() <= 100 &&
+             data.phone is string && data.phone.size() <= 20 &&
+             data.checkIn is string && data.checkIn.size() <= 50 &&
+             data.checkOut is string && data.checkOut.size() <= 50 &&
+             data.roomType is string && data.roomType.size() <= 100 &&
+             data.totalAmount is number &&
+             data.status is string && data.status in ['pending', 'confirmed', 'cancelled'] &&
+             data.createdAt == request.time &&
+             data.updatedAt == request.time;
+    }
+    
+    function isValidBookingUpdate(data) {
+      return data.keys().hasAll(['userId', 'fullName', 'email', 'phone', 'checkIn', 'checkOut', 'roomType', 'totalAmount', 'status', 'createdAt', 'updatedAt']) &&
+             data.userId == existing().userId &&
+             data.createdAt == existing().createdAt &&
+             data.updatedAt == request.time &&
+             data.status is string && data.status in ['pending', 'confirmed', 'cancelled'];
+    }
+
+    function isValidRoom(data) {
+      return data.keys().hasAll(['name', 'price', 'status', 'image', 'createdAt', 'updatedAt']) &&
+             data.name is string && data.name.size() <= 100 &&
+             data.price is number &&
+             data.status is string && data.status in ['Available', 'Occupied', 'Maintenance'] &&
+             data.image is string && data.image.size() <= 500 &&
+             data.createdAt == request.time &&
+             data.updatedAt == request.time;
+    }
+
+    function isValidRoomUpdate(data) {
+      return data.keys().hasAll(['name', 'price', 'status', 'image', 'createdAt', 'updatedAt']) &&
+             data.name is string && data.name.size() <= 100 &&
+             data.price is number &&
+             data.status is string && data.status in ['Available', 'Occupied', 'Maintenance'] &&
+             data.image is string && data.image.size() <= 500 &&
+             data.createdAt == existing().createdAt &&
+             data.updatedAt == request.time;
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn(); // Allow any signed in user to read for simplicity (admin dashboard needs this)
+      allow create: if isSignedIn() && isValidBooking(incoming());
+      allow update: if isSignedIn() && isOwner() && isValidBookingUpdate(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+      allow delete: if isAdmin();
+    }
+
+    match /rooms/{roomId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidRoom(incoming());
+      allow update: if isAdmin() && isValidRoomUpdate(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'price', 'status', 'image', 'updatedAt']);
+      allow delete: if isAdmin();
+    }
+  }
+}

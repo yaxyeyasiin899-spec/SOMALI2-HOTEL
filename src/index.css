@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #d4af37;
+  --color-gold-light: #e5c158;
+  --color-gold-dark: #b5952f;
+  --color-hotel-dark: #111827;
+  --color-hotel-darker: #030712;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
