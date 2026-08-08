@@ -15,6 +15,8 @@ export default function Login({ setView }: { setView: (v: ViewState) => void }) 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -22,14 +24,27 @@ export default function Login({ setView }: { setView: (v: ViewState) => void }) 
     
     if (authMode === 'forgot') {
       if (email) {
+        setIsLoading(true);
         try {
           await sendPasswordResetEmail(auth, email);
-          setSuccess('Password reset link sent to your email.');
+          setSuccess('Link-ga dib loogu cusboonaysiinayo password-ka waxaa loo diray email-kaaga. Fadlan eeg Inbox-ka iyo Spam/Junk.');
         } catch (err: any) {
-          setError(err.message || 'Failed to send reset email');
+          if (err.code === 'auth/user-not-found') {
+            setError('Email-kan account laguma diiwaangelin.');
+          } else if (err.code === 'auth/invalid-email') {
+            setError('Fadlan geli email sax ah.');
+          } else if (err.code === 'auth/too-many-requests') {
+            setError('Codsi xad dhaaf ah. Fadlan waxyar kadib isku day markale.');
+          } else if (err.code === 'auth/unauthorized-domain') {
+            setError('Domain-kan looma oggola. Fadlan ku dar Firebase Console -> Authentication -> Settings -> Authorized domains.');
+          } else {
+            setError(err.message || 'Khalad ayaa dhacay. Fadlan isku day markale.');
+          }
+        } finally {
+          setIsLoading(false);
         }
       } else {
-        setError('Please enter your email address');
+        setError('Fadlan geli email-kaaga.');
       }
       return;
     }
@@ -267,9 +282,10 @@ export default function Login({ setView }: { setView: (v: ViewState) => void }) 
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-bold rounded-sm text-hotel-darker bg-gold hover:bg-gold-light focus:outline-none transition-colors uppercase tracking-wider"
+                disabled={isLoading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-bold rounded-sm text-hotel-darker bg-gold hover:bg-gold-light focus:outline-none transition-colors uppercase tracking-wider disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {authMode === 'signup' ? 'Create Account' : authMode === 'forgot' ? 'Send Reset Link' : 'Sign in'}
+                {isLoading ? 'Sending...' : authMode === 'signup' ? 'Create Account' : authMode === 'forgot' ? 'Send Reset Link' : 'Sign in'}
               </button>
             </div>
           </form>

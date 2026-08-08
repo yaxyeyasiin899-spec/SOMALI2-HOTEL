@@ -1,0 +1,9 @@
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-bold rounded-sm text-hotel-darker bg-gold hover:bg-gold-light focus:outline-none transition-colors uppercase tracking-wider disabled:opacity-70"
+              >
+                {isLoading ? 'Sending...' : authMode === 'signup' ? 'Create Account' : authMode === 'forgot' ? 'Send Reset Link' : 'Sign in'}
+              </button>
+            </div>
